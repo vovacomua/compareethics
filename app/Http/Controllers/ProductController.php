@@ -82,4 +82,20 @@ class ProductController extends Controller
     {
         //
     }
+
+    public function search(Request $request){
+        $search = $request->input('search');
+
+        $products = Product::query()->with(['type', 'tags'])
+            ->where('name', 'LIKE', "%" . $search . "%")
+            ->orWhereHas('type', function ($query) use ($search) {
+                $query->where('name', 'LIKE', "%" . $search . "%");
+            })
+            ->orWhereHas('tags', function ($query) use ($search) {
+                $query->where('name', 'LIKE', "%" . $search . "%");
+            })
+            ->get();
+
+        return view('search', compact('products'));
+    }
 }
