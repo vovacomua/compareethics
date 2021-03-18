@@ -1,29 +1,35 @@
+<html>
+<body>
+
 <form action="{{ route('search') }}" method="GET">
     <input type="text" name="search" required/>
     <button type="submit">Search</button>
 </form>
 
 @if($products->isNotEmpty())
-    <table>
+    <table border="1px">
+        <tr>
+            <th>Name</th><th>Type</th><th>Tags</th>
+        </tr>
     @foreach ($products as $product)
         <tr>
             <td>
-                <p>{{ $product->name }}</p>
+                {{ $product->name }}
             </td>
                 <td>
                     @if($product->type)
                         <div>
-                            <p>{{ $product->type->name }}</p>
+                            {{ $product->type->name }}
                         </div>
                     @endif
                 </td>
                 <td>
                     @if($product->tags->isNotEmpty())
+                        <ul>
                         @foreach ($product->tags as $tag)
-                            <div>
-                                <p>{{ $tag->name }}</p>
-                            </div>
+                            <li>{{ $tag->name }}</li>
                         @endforeach
+                        </ul>
                     @endif
                 </td>
         </tr>
@@ -34,3 +40,6 @@
         <h3>No products found</h3>
     </div>
 @endif
+
+</body>
+</html>
